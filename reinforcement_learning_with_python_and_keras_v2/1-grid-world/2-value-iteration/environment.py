@@ -13,6 +13,8 @@ POSSIBLE_ACTIONS = [0, 1, 2, 3]  # 상, 하, 좌, 우
 ACTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # 좌표로 나타낸 행동
 REWARDS = []
 
+IMAGE_PATH = "reinforcement_learning_with_python_and_keras_v2/1-grid-world/img"
+
 
 class GraphicDisplay(tk.Tk):
     def __init__(self, value_iteration):
@@ -81,15 +83,19 @@ class GraphicDisplay(tk.Tk):
 
     def load_images(self):
         PhotoImage = ImageTk.PhotoImage
-        up = PhotoImage(Image.open("../img/up.png").resize((13, 13)))
-        right = PhotoImage(Image.open("../img/right.png").resize((13, 13)))
-        left = PhotoImage(Image.open("../img/left.png").resize((13, 13)))
-        down = PhotoImage(Image.open("../img/down.png").resize((13, 13)))
+        up = PhotoImage(Image.open(f"{IMAGE_PATH}/up.png").resize((13, 13)))
+        right = PhotoImage(Image.open(
+            f"{IMAGE_PATH}/right.png").resize((13, 13)))
+        left = PhotoImage(Image.open(
+            f"{IMAGE_PATH}/left.png").resize((13, 13)))
+        down = PhotoImage(Image.open(
+            f"{IMAGE_PATH}/down.png").resize((13, 13)))
         rectangle = PhotoImage(
-            Image.open("../img/rectangle.png").resize((65, 65)))
+            Image.open(f"{IMAGE_PATH}/rectangle.png").resize((65, 65)))
         triangle = PhotoImage(
-            Image.open("../img/triangle.png").resize((65, 65)))
-        circle = PhotoImage(Image.open("../img/circle.png").resize((65, 65)))
+            Image.open(f"{IMAGE_PATH}/triangle.png").resize((65, 65)))
+        circle = PhotoImage(Image.open(
+            f"{IMAGE_PATH}/circle.png").resize((65, 65)))
         return (up, down, left, right), (rectangle, triangle, circle)
 
     def clear(self):
@@ -248,9 +254,9 @@ class Env:
     @staticmethod
     def check_boundary(state):
         state[0] = (0 if state[0] < 0 else WIDTH - 1
-        if state[0] > WIDTH - 1 else state[0])
+                    if state[0] > WIDTH - 1 else state[0])
         state[1] = (0 if state[1] < 0 else HEIGHT - 1
-        if state[1] > HEIGHT - 1 else state[1])
+                    if state[1] > HEIGHT - 1 else state[1])
         return state
 
     def get_transition_prob(self, state, action):

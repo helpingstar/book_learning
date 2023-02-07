@@ -14,10 +14,10 @@ class ValueIteration:
     # 벨만 최적 방정식을 통해 다음 가치 함수 계산
     def value_iteration(self):
         # 다음 가치함수 초기화
-        next_value_table = [[0.0] * self.env.width 
-                           for _ in range(self.env.height)]
+        next_value_table = [[0.0] * self.env.width
+                            for _ in range(self.env.height)]
 
-        # 모든 상태에 대해서 벨만 최적방정식을 계산                           
+        # 모든 상태에 대해서 벨만 최적방정식을 계산
         for state in self.env.get_all_states():
             # 마침 상태의 가치 함수 = 0
             if state == [2, 2]:
@@ -30,9 +30,11 @@ class ValueIteration:
                 next_state = self.env.state_after_action(state, action)
                 reward = self.env.get_reward(state, action)
                 next_value = self.get_value(next_state)
+                # R(s) + γ * V(s')
                 value_list.append((reward + self.discount_factor * next_value))
 
             # 최댓값을 다음 가치 함수로 대입
+            # V(s) = max[R(s) + γ * V(s')]
             next_value_table[state[0]][state[1]] = max(value_list)
 
         self.value_table = next_value_table
@@ -52,6 +54,7 @@ class ValueIteration:
             value_list.append(value)
 
         # 최대 큐 함수를 가진 행동(복수일 경우 여러 개)을 반환
+        # a = argmax[R(s) + γ * q(s, a)]
         max_idx_list = np.argwhere(value_list == np.amax(value_list))
         action_list = max_idx_list.flatten().tolist()
         return action_list

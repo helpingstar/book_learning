@@ -12,7 +12,7 @@ TRANSITION_PROB = 1
 POSSIBLE_ACTIONS = [0, 1, 2, 3]  # 좌, 우, 상, 하
 ACTIONS = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # 좌표로 나타낸 행동
 REWARDS = []
-IMAGE_PATH = "C:/Users/helpi/book_learning/reinforcement_learning_with_python_and_keras_v2/1-grid-world/img"
+IMAGE_PATH = "reinforcement_learning_with_python_and_keras_v2/1-grid-world/img"
 
 
 class GraphicDisplay(tk.Tk):
