@@ -15,7 +15,8 @@ class SARSAgent:
 
     # <s, a, r, s', a'>의 샘플로부터 큐함수를 업데이트
     def learn(self, state, action, reward, next_state, next_action):
-        state, next_state = str(state), str(next_state)
+        # state, next_state = str(state), str(next_state)
+        state, next_state = tuple(state), tuple(next_state)
         current_q = self.q_table[state][action]
         next_state_q = self.q_table[next_state][next_action]
         td = reward + self.discount_factor * next_state_q - current_q
@@ -29,7 +30,8 @@ class SARSAgent:
             action = np.random.choice(self.actions)
         else:
             # 큐함수에 따른 행동 반환
-            state = str(state)
+            # state = str(state)
+            state = tuple(state)
             q_list = self.q_table[state]
             action = arg_max(q_list)
         return action

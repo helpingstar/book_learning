@@ -9,6 +9,8 @@ UNIT = 100  # 필셀 수
 HEIGHT = 5  # 그리드 월드 가로
 WIDTH = 5  # 그리드 월드 세로
 
+IMAGE_PATH = "reinforcement_learning_with_python_and_keras_v2/1-grid-world/img"
+
 
 class Env(tk.Tk):
     def __init__(self):
@@ -45,11 +47,11 @@ class Env(tk.Tk):
 
     def load_images(self):
         rectangle = PhotoImage(
-            Image.open("../img/rectangle.png").resize((65, 65)))
+            Image.open(f"{IMAGE_PATH}/rectangle.png").resize((65, 65)))
         triangle = PhotoImage(
-            Image.open("../img/triangle.png").resize((65, 65)))
+            Image.open(f"{IMAGE_PATH}/triangle.png").resize((65, 65)))
         circle = PhotoImage(
-            Image.open("../img/circle.png").resize((65, 65)))
+            Image.open(f"{IMAGE_PATH}/circle.png").resize((65, 65)))
 
         return rectangle, triangle, circle
 
@@ -78,9 +80,11 @@ class Env(tk.Tk):
             for y in range(WIDTH):
                 for action in range(0, 4):
                     state = [x, y]
-                    if str(state) in q_table.keys():
-                        temp = q_table[str(state)][action]
-                        self.text_value(y, x, round(temp, 3), action)
+                    # if str(state) in q_table.keys():
+                    # temp = q_table[str(state)][action]
+                    if tuple(state) in q_table.keys():
+                        temp = q_table[tuple(state)][action]
+                        self.text_value(y, x, round(temp, 2), action)
 
     def coords_to_state(self, coords):
         x = int((coords[0] - 50) / 100)
@@ -89,7 +93,7 @@ class Env(tk.Tk):
 
     def reset(self):
         self.update()
-        time.sleep(0.5)
+        # time.sleep(0.5)
         x, y = self.canvas.coords(self.rectangle)
         self.canvas.move(self.rectangle, UNIT / 2 - x, UNIT / 2 - y)
         self.render()
@@ -121,7 +125,8 @@ class Env(tk.Tk):
 
         # 보상 함수
         if next_state == self.canvas.coords(self.circle):
-            reward = 100
+            # reward = 100
+            reward = 10000
             done = True
         elif next_state in [self.canvas.coords(self.triangle1),
                             self.canvas.coords(self.triangle2)]:
@@ -135,5 +140,5 @@ class Env(tk.Tk):
         return next_state, reward, done
 
     def render(self):
-        time.sleep(0.03)
+        # time.sleep(0.03)
         self.update()

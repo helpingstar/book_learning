@@ -14,7 +14,8 @@ class QLearningAgent:
 
     # <s, a, r, s'> 샘플로부터 큐함수 업데이트
     def learn(self, state, action, reward, next_state):
-        state, next_state = str(state), str(next_state)
+        # state, next_state = str(state), str(next_state)
+        state, next_state = tuple(state), tuple(next_state)
         q_1 = self.q_table[state][action]
         # 벨만 최적 방정식을 사용한 큐함수의 업데이트
         q_2 = reward + self.discount_factor * max(self.q_table[next_state])
@@ -27,7 +28,8 @@ class QLearningAgent:
             action = np.random.choice(self.actions)
         else:
             # 큐함수에 따른 행동 반환
-            state = str(state)
+            # state = str(state)
+            state = tuple(state)
             q_list = self.q_table[state]
             action = arg_max(q_list)
         return action
@@ -58,7 +60,7 @@ if __name__ == "__main__":
             agent.learn(state, action, reward, next_state)
 
             state = next_state
-            
+
             # 모든 큐함수를 화면에 표시
             env.print_value_all(agent.q_table)
 

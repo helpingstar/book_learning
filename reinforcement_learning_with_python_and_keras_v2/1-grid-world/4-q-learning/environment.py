@@ -9,6 +9,8 @@ UNIT = 100  # 픽셀 수
 HEIGHT = 5  # 그리드월드 세로
 WIDTH = 5  # 그리드월드 가로
 
+IMAGE_PATH = "reinforcement_learning_with_python_and_keras_v2/1-grid-world/img"
+
 
 class Env(tk.Tk):
     def __init__(self):
@@ -45,11 +47,11 @@ class Env(tk.Tk):
 
     def load_images(self):
         rectangle = PhotoImage(
-            Image.open("../img/rectangle.png").resize((65, 65)))
+            Image.open(f"{IMAGE_PATH}/rectangle.png").resize((65, 65)))
         triangle = PhotoImage(
-            Image.open("../img/triangle.png").resize((65, 65)))
+            Image.open(f"{IMAGE_PATH}/triangle.png").resize((65, 65)))
         circle = PhotoImage(
-            Image.open("../img/circle.png").resize((65, 65)))
+            Image.open(f"{IMAGE_PATH}/circle.png").resize((65, 65)))
 
         return rectangle, triangle, circle
 
@@ -79,8 +81,10 @@ class Env(tk.Tk):
             for j in range(WIDTH):
                 for action in range(0, 4):
                     state = [i, j]
-                    if str(state) in q_table.keys():
-                        temp = q_table[str(state)][action]
+                    # if str(state) in q_table.keys():
+                    #     temp = q_table[str(state)][action]
+                    if tuple(state) in q_table.keys():
+                        temp = q_table[tuple(state)][action]
                         self.text_value(j, i, round(temp, 3), action)
 
     def coords_to_state(self, coords):
@@ -95,7 +99,7 @@ class Env(tk.Tk):
 
     def reset(self):
         self.update()
-        time.sleep(0.5)
+        # time.sleep(0.5)
         x, y = self.canvas.coords(self.rectangle)
         self.canvas.move(self.rectangle, UNIT / 2 - x, UNIT / 2 - y)
         self.render()
@@ -141,5 +145,5 @@ class Env(tk.Tk):
         return next_state, reward, done
 
     def render(self):
-        time.sleep(0.03)
+        # time.sleep(0.03)
         self.update()
