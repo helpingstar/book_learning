@@ -1,6 +1,11 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,jupyternotebooks,python,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,jupyternotebooks,python,windows
 
+save_model/
+save_graph/
+model.index
+
+
 ### JupyterNotebooks ###
 # gitignore template for Jupyter Notebooks
 # website: http://jupyter.org/

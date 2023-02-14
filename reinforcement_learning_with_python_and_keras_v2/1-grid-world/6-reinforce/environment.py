@@ -10,6 +10,7 @@ WIDTH = 5  # 그리드 가로
 
 np.random.seed(1)
 
+IMAGE_PATH = "reinforcement_learning_with_python_and_keras_v2/1-grid-world/img"
 
 class Env(tk.Tk):
     def __init__(self, render_speed=0.01):
@@ -55,11 +56,11 @@ class Env(tk.Tk):
 
     def load_images(self):
         rectangle = PhotoImage(
-            Image.open("../img/rectangle.png").resize((30, 30)))
+            Image.open(f"{IMAGE_PATH}/rectangle.png").resize((30, 30)))
         triangle = PhotoImage(
-            Image.open("../img/triangle.png").resize((30, 30)))
+            Image.open(f"{IMAGE_PATH}/triangle.png").resize((30, 30)))
         circle = PhotoImage(
-            Image.open("../img/circle.png").resize((30, 30)))
+            Image.open(f"{IMAGE_PATH}/circle.png").resize((30, 30)))
 
         return rectangle, triangle, circle
 
@@ -232,5 +233,5 @@ class Env(tk.Tk):
 
     def render(self):
         # 게임 속도 조정
-        time.sleep(self.render_speed)
+        # time.sleep(self.render_speed)
         self.update()

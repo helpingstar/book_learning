@@ -1,11 +1,15 @@
 import copy
 import pylab
 import random
+import os
 import numpy as np
 from environment import Env
 import tensorflow as tf
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
+
+DEEP_SARSA_PATH = "reinforcement_learning_with_python_and_keras_v2/1-grid-world/5-deep-sarsa"
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 
 # 딥살사 인공신경망
@@ -29,15 +33,15 @@ class DeepSARSAgent:
         # 상태의 크기와 행동의 크기 정의
         self.state_size = state_size
         self.action_size = action_size
-        
+
         # 딥살사 하이퍼 파라메터
         self.discount_factor = 0.99
         self.learning_rate = 0.001
-        self.epsilon = 1.  
+        self.epsilon = 1.
         self.epsilon_decay = .9999
         self.epsilon_min = 0.01
         self.model = DeepSARSA(self.action_size)
-        self.optimizer = Adam(lr=self.learning_rate)
+        self.optimizer = Adam(learning_rate=self.learning_rate)
 
     # 입실론 탐욕 정책으로 행동 선택
     def get_action(self, state):
@@ -66,7 +70,7 @@ class DeepSARSAgent:
 
             # MSE 오류 함수 계산
             loss = tf.reduce_mean(tf.square(target - predict))
-        
+
         # 오류함수를 줄이는 방향으로 모델 업데이트
         grads = tape.gradient(loss, model_params)
         self.optimizer.apply_gradients(zip(grads, model_params))
@@ -79,7 +83,7 @@ if __name__ == "__main__":
     action_space = [0, 1, 2, 3, 4]
     action_size = len(action_space)
     agent = DeepSARSAgent(state_size, action_size)
-    
+
     scores, episodes = [], []
 
     EPISODES = 1000
@@ -100,7 +104,7 @@ if __name__ == "__main__":
             next_action = agent.get_action(next_state)
 
             # 샘플로 모델 학습
-            agent.train_model(state, action, reward, next_state, 
+            agent.train_model(state, action, reward, next_state,
                                 next_action, done)
             score += reward
             state = next_state
@@ -115,9 +119,9 @@ if __name__ == "__main__":
                 pylab.plot(episodes, scores, 'b')
                 pylab.xlabel("episode")
                 pylab.ylabel("score")
-                pylab.savefig("./save_graph/graph.png")
+                pylab.savefig(f"{DEEP_SARSA_PATH}/save_graph/graph.png")
 
 
         # 100 에피소드마다 모델 저장
         if e % 100 == 0:
-            agent.model.save_weights('save_model/model', save_format='tf')
+            agent.model.save_weights(f'{DEEP_SARSA_PATH}/save_model/model', save_format='tf')

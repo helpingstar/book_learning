@@ -1,5 +1,6 @@
 import copy
 import pylab
+import os
 import random
 import numpy as np
 from environment import Env
@@ -7,6 +8,8 @@ import tensorflow as tf
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
 
+REINFORCE_PATH = "reinforcement_learning_with_python_and_keras_v2/1-grid-world/6-reinforce"
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 # 상태가 입력, 각 행동의 확률이 출력인 인공신경망 생성
 class REINFORCE(tf.keras.Model):
@@ -29,13 +32,13 @@ class REINFORCEAgent:
         # 상태의 크기와 행동의 크기 정의
         self.state_size = state_size
         self.action_size = action_size
-        
+
         # REINFORCE 하이퍼 파라메터
         self.discount_factor = 0.99
         self.learning_rate = 0.001
 
         self.model = REINFORCE(self.action_size)
-        self.optimizer = Adam(lr=self.learning_rate)
+        self.optimizer = Adam(learning_rate=self.learning_rate)
         self.states, self.actions, self.rewards = [], [], []
 
     # 정책신경망으로 행동 선택
@@ -66,7 +69,7 @@ class REINFORCEAgent:
         discounted_rewards = np.float32(self.discount_rewards(self.rewards))
         discounted_rewards -= np.mean(discounted_rewards)
         discounted_rewards /= np.std(discounted_rewards)
-        
+
         # 크로스 엔트로피 오류함수 계산
         model_params = self.model.trainable_variables
         with tf.GradientTape() as tape:
@@ -128,9 +131,9 @@ if __name__ == "__main__":
                 pylab.plot(episodes, scores, 'b')
                 pylab.xlabel("episode")
                 pylab.ylabel("score")
-                pylab.savefig("./save_graph/graph.png")
-                
+                pylab.savefig(f"{REINFORCE_PATH}/save_graph/graph.png")
+
 
         # 100 에피소드마다 모델 저장
         if e % 100 == 0:
-            agent.model.save_weights('save_model/model', save_format='tf')
+            agent.model.save_weights(f'{REINFORCE_PATH}/save_model/model', save_format='tf')
